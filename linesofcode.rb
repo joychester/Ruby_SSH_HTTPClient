@@ -19,8 +19,8 @@ client=HTTPClient.new
 Net::SSH.start(C3_SSH_HOST,C3_SSH_Loginname,:password => C3_SSH_PWD) do |ssh|
 
     result_dev = ssh.exec!('./countlines.sh p4list.txt')
-	
-	result_qe = ssh.exec!('./countlines_qe.sh p4list_qe.txt')
+
+    result_qe = ssh.exec!('./countlines_qe.sh p4list_qe.txt')
 	
 end
 
