@@ -6,14 +6,9 @@ C3_SSH_HOST="10.WW.EEE.XXX"
 C3_SSH_Loginname="XXX"
 C3_SSH_PWD="XXXXXXX"
 
-currentDate = Date.today
-currentDateStr = currentDate.to_s
-
 result_dev, result_qe = ""
 
 QADash_URL = "http://qahub.mycorp.dev:8000/getlines"
-
-client=HTTPClient.new
 
 Net::SSH.start(C3_SSH_HOST,C3_SSH_Loginname,:password => C3_SSH_PWD) do |ssh|
 
@@ -24,6 +19,9 @@ Net::SSH.start(C3_SSH_HOST,C3_SSH_Loginname,:password => C3_SSH_PWD) do |ssh|
 end
 
 def post_line_of_code(folder_type)
+	currentDate = Date.today.to_s
+	client=HTTPClient.new
+	
 	folder_type.each_line  do |row| 
 		temp = row.split('=>')
 		case temp[0]
@@ -38,7 +36,7 @@ def post_line_of_code(folder_type)
 		lines = temp[1].chomp.to_i
 
 		p "HTTPClient POST method start"
-		post_body = { :tag => repo, :path => temp[0], :lines => lines, :cdate => currentDateStr}
+		post_body = { :tag => repo, :path => temp[0], :lines => lines, :cdate => currentDate}
 		client.post(QADash_URL, post_body)
 		p "HTTPClient POST method end!"
 	end
